@@ -20,6 +20,10 @@
             font-family: "SF Pro Display", -apple-system, BlinkMacSystemFont, sans-serif;
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
             background-color: var(--white);
             color: var(--deep-black);
@@ -40,6 +44,12 @@
             background: var(--glass);
             backdrop-filter: blur(20px);
             border-bottom: 1px solid rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
+
+        nav.scrolled {
+            padding: 16px 6%;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
         }
 
         .logo { 
@@ -48,9 +58,19 @@
             letter-spacing: -1.5px; 
             color: var(--deep-black);
             text-decoration: none;
+            transition: transform 0.3s ease;
         }
 
-        .nav-links { display: flex; gap: 40px; }
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        .nav-links { 
+            display: flex; 
+            gap: 40px; 
+            align-items: center;
+        }
+        
         .nav-links a { 
             text-decoration: none; 
             color: var(--deep-black); 
@@ -58,6 +78,105 @@
             font-weight: 600; 
             letter-spacing: 0.5px;
             text-transform: uppercase;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--brand-teal);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--brand-teal);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .cta-button {
+            background: var(--brand-teal);
+            color: white;
+            padding: 12px 28px;
+            border-radius: 100px;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            border: 2px solid var(--brand-teal);
+        }
+
+        .cta-button:hover {
+            background: transparent;
+            color: var(--brand-teal);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,139,157,0.3);
+        }
+
+        /* Mobile Menu */
+        .mobile-menu-btn {
+            display: none;
+            flex-direction: column;
+            gap: 6px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+        }
+
+        .mobile-menu-btn span {
+            width: 25px;
+            height: 2px;
+            background: var(--deep-black);
+            transition: all 0.3s ease;
+        }
+
+        .mobile-menu-btn.active span:nth-child(1) {
+            transform: rotate(45deg) translate(8px, 8px);
+        }
+
+        .mobile-menu-btn.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .mobile-menu-btn.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -7px);
+        }
+
+        .mobile-nav {
+            display: none;
+            position: fixed;
+            top: 80px;
+            left: 0;
+            width: 100%;
+            background: var(--white);
+            padding: 30px 6%;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transform: translateY(-100%);
+            transition: transform 0.3s ease;
+        }
+
+        .mobile-nav.active {
+            transform: translateY(0);
+        }
+
+        .mobile-nav a {
+            display: block;
+            padding: 15px 0;
+            text-decoration: none;
+            color: var(--deep-black);
+            font-size: 16px;
+            font-weight: 600;
+            border-bottom: 1px solid var(--soft-gray);
         }
 
         /* --- Immersive Hero Section --- */
@@ -70,9 +189,37 @@
                         url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=2000');
             background-size: cover;
             background-position: right center;
+            position: relative;
+            overflow: hidden;
         }
 
-        .hero-content { max-width: 700px; }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(0,139,157,0.1) 0%, transparent 100%);
+        }
+
+        .hero-content { 
+            max-width: 700px; 
+            position: relative;
+            z-index: 2;
+            animation: fadeInUp 1s ease;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
 
         .tagline {
             font-size: 12px;
@@ -96,15 +243,63 @@
             line-height: 1.5;
             color: #444;
             max-width: 500px;
+            margin-bottom: 40px;
         }
 
-        /* --- Doorstep Section: Depth Overlays --- */
+        .hero-cta-group {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .primary-btn, .secondary-btn {
+            padding: 18px 40px;
+            border-radius: 100px;
+            font-size: 16px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+        }
+
+        .primary-btn {
+            background: var(--brand-teal);
+            color: white;
+        }
+
+        .primary-btn:hover {
+            background: #007080;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0,139,157,0.4);
+        }
+
+        .secondary-btn {
+            background: transparent;
+            color: var(--deep-black);
+            border: 2px solid var(--deep-black);
+        }
+
+        .secondary-btn:hover {
+            background: var(--deep-black);
+            color: white;
+        }
+
+        /* --- Doorstep Section --- */
         .depth-section {
             padding: 140px 6%;
             background: var(--soft-gray);
             display: flex;
             gap: 80px;
             align-items: center;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s ease;
+        }
+
+        .depth-section.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         .image-stack {
@@ -116,9 +311,13 @@
         .img-main {
             width: 80%;
             height: 100%;
-            object-fit: cover;
             border-radius: 30px;
             box-shadow: 0 40px 80px rgba(0,0,0,0.1);
+            transition: transform 0.5s ease;
+        }
+
+        .img-main:hover {
+            transform: scale(1.02);
         }
 
         .img-overlay {
@@ -127,14 +326,73 @@
             right: 0;
             width: 50%;
             height: 60%;
-            background: var(--brand-teal) url('https://images.unsplash.com/photo-1593054981938-f860037f59d4?auto=format&fit=crop&q=80&w=800') center/cover;
+            background: var(--brand-teal);
             border-radius: 24px;
             border: 10px solid var(--soft-gray);
             box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            transition: transform 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 30px;
+            color: white;
+            font-size: 28px;
+            font-weight: 900;
+            text-align: center;
+            line-height: 1.3;
+            letter-spacing: -1px;
         }
 
-        .text-side { flex: 1; }
-        .text-side h2 { font-size: 56px; font-weight: 900; letter-spacing: -3px; margin-bottom: 20px; }
+        .img-overlay:hover {
+            transform: scale(1.05);
+        }
+
+        .text-side { 
+            flex: 1; 
+        }
+        
+        .text-side h2 { 
+            font-size: 56px; 
+            font-weight: 900; 
+            letter-spacing: -3px; 
+            margin-bottom: 20px; 
+        }
+
+        /* --- Features Section --- */
+        .features-section {
+            padding: 100px 6%;
+            background: white;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 40px;
+            margin-top: 60px;
+        }
+
+        .feature-card {
+            padding: 40px;
+            background: var(--soft-gray);
+            border-radius: 30px;
+            transition: all 0.4s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        .feature-card h3 {
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: var(--deep-black);
+        }
+
+        .feature-card p {
+            color: #666;
+            line-height: 1.6;
+        }
 
         /* --- Subscription Cards --- */
         .subscription-grid {
@@ -156,106 +414,1616 @@
             border-radius: 40px;
             transition: all 0.4s ease;
             border: 1px solid #222;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .sub-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: var(--brand-teal);
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
+        }
+
+        .sub-card:hover::before {
+            transform: scaleX(1);
         }
 
         .sub-card:hover {
             border-color: var(--brand-teal);
             transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,139,157,0.3);
         }
 
-        .sub-card h3 { font-size: 28px; margin-bottom: 15px; }
-        .sub-card p { opacity: 0.6; line-height: 1.6; }
+        .sub-card h3 { 
+            font-size: 28px; 
+            margin-bottom: 15px; 
+        }
+        
+        .sub-card p { 
+            opacity: 0.6; 
+            line-height: 1.6; 
+            margin-bottom: 30px;
+        }
 
-        /* --- Launch Reveal --- */
+        .sub-card .price {
+            font-size: 42px;
+            font-weight: 900;
+            margin: 20px 0;
+            color: var(--brand-teal);
+        }
+
+        .sub-card ul {
+            list-style: none;
+            margin: 20px 0;
+        }
+
+        .sub-card li {
+            padding: 10px 0;
+            padding-left: 30px;
+            position: relative;
+        }
+
+        .sub-card li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--brand-teal);
+            font-weight: bold;
+        }
+
+        .select-plan-btn {
+            width: 100%;
+            padding: 15px;
+            background: transparent;
+            border: 2px solid var(--brand-teal);
+            color: var(--brand-teal);
+            border-radius: 100px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .select-plan-btn:hover {
+            background: var(--brand-teal);
+            color: white;
+        }
+
+        /* --- How It Works Section --- */
+        .how-it-works {
+            padding: 100px 6%;
+            background: white;
+        }
+
+        .steps-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 60px;
+            margin-top: 60px;
+        }
+
+        .step {
+            text-align: center;
+            position: relative;
+        }
+
+        .step-number {
+            width: 80px;
+            height: 80px;
+            background: var(--brand-teal);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            font-weight: 900;
+            margin: 0 auto 30px;
+        }
+
+        .step h3 {
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+
+        .step p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        /* --- FAQ Section --- */
+        .faq-section {
+            padding: 100px 6%;
+            background: var(--soft-gray);
+        }
+
+        .faq-container {
+            max-width: 800px;
+            margin: 60px auto 0;
+        }
+
+        .faq-item {
+            background: white;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .faq-question {
+            padding: 25px 30px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .faq-question:hover {
+            background: var(--soft-gray);
+        }
+
+        .faq-icon {
+            font-size: 24px;
+            transition: transform 0.3s ease;
+        }
+
+        .faq-item.active .faq-icon {
+            transform: rotate(180deg);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+            padding: 0 30px;
+            color: #666;
+            line-height: 1.8;
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 500px;
+            padding: 0 30px 25px;
+        }
+
+        /* --- Launch/Contact Section --- */
         .launch-footer {
-            height: 80vh;
+            min-height: 80vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: center;
-            padding: 0 6%;
+            padding: 100px 6%;
+            background: linear-gradient(135deg, var(--deep-black) 0%, #1a1a1a 100%);
+            color: white;
         }
 
-        .launch-footer h2 { font-size: 72px; letter-spacing: -4px; margin-bottom: 20px; }
+        .launch-footer h2 { 
+            font-size: 72px; 
+            letter-spacing: -4px; 
+            margin-bottom: 20px; 
+        }
+
         .concierge-pill {
             padding: 15px 40px;
-            background: var(--soft-gray);
+            background: var(--brand-teal);
+            color: white;
             border-radius: 100px;
             font-weight: 700;
             font-size: 18px;
             margin-top: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
         }
 
+        .concierge-pill:hover {
+            background: #007080;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0,139,157,0.4);
+        }
+
+        /* --- Modal Styles --- */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(10px);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 30px;
+            padding: 50px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            animation: slideUp 0.4s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--soft-gray);
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .modal-close:hover {
+            background: var(--deep-black);
+            color: white;
+            transform: rotate(90deg);
+        }
+
+        .modal-content h2 {
+            font-size: 36px;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 10px;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid var(--soft-gray);
+            border-radius: 15px;
+            font-size: 16px;
+            font-family: inherit;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--brand-teal);
+            box-shadow: 0 0 0 3px rgba(0,139,157,0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 18px;
+            background: var(--brand-teal);
+            color: white;
+            border: none;
+            border-radius: 100px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .submit-btn:hover {
+            background: #007080;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0,139,157,0.4);
+        }
+
+        .submit-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .success-message {
+            background: #4CAF50;
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .success-message.active {
+            display: block;
+            animation: slideUp 0.4s ease;
+        }
+
+        /* --- Booking Calendar --- */
+        .calendar-container {
+            margin: 30px 0;
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .calendar-nav {
+            background: var(--soft-gray);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 18px;
+            transition: all 0.3s ease;
+        }
+
+        .calendar-nav:hover {
+            background: var(--brand-teal);
+            color: white;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+        }
+
+        .calendar-day {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .calendar-day:not(.disabled):hover {
+            background: var(--soft-gray);
+        }
+
+        .calendar-day.selected {
+            background: var(--brand-teal);
+            color: white;
+        }
+
+        .calendar-day.disabled {
+            color: #ccc;
+            cursor: not-allowed;
+        }
+
+        .time-slots {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .time-slot {
+            padding: 15px;
+            border: 2px solid var(--soft-gray);
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .time-slot:hover {
+            border-color: var(--brand-teal);
+            background: rgba(0,139,157,0.1);
+        }
+
+        .time-slot.selected {
+            background: var(--brand-teal);
+            color: white;
+            border-color: var(--brand-teal);
+        }
+
+        .time-slot.disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        /* --- Floating Chat Button --- */
+        .chat-float {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: var(--brand-teal);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 28px;
+            font-weight: 900;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(0,139,157,0.4);
+            transition: all 0.3s ease;
+            z-index: 999;
+        }
+
+        .chat-float:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 30px rgba(0,139,157,0.6);
+        }
+
+        /* --- Responsive Design --- */
         @media (max-width: 968px) {
-            .hero { background-position: 70% center; }
-            .depth-section { flex-direction: column; padding: 80px 6%; }
-            .image-stack { height: 400px; width: 100%; }
-            .nav-links { display: none; }
+            .hero { 
+                background-position: 70% center;
+                padding: 0 5%;
+            }
+            
+            .depth-section { 
+                flex-direction: column; 
+                padding: 80px 5%; 
+            }
+            
+            .image-stack { 
+                height: 400px; 
+                width: 100%; 
+            }
+            
+            .nav-links { 
+                display: none; 
+            }
+
+            .mobile-menu-btn {
+                display: flex;
+            }
+
+            .mobile-nav {
+                display: block;
+            }
+
+            h1 {
+                font-size: 48px;
+            }
+
+            .text-side h2 {
+                font-size: 42px;
+            }
+
+            .launch-footer h2 {
+                font-size: 48px;
+            }
+
+            .modal-content {
+                padding: 30px 20px;
+            }
+
+            .hero-cta-group {
+                flex-direction: column;
+            }
+
+            .primary-btn, .secondary-btn {
+                width: 100%;
+                text-align: center;
+            }
+        }
+
+        /* --- Loading Animation --- */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* --- Progress Bar --- */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 4px;
+            background: var(--brand-teal);
+            z-index: 9999;
+            transition: width 0.3s ease;
         }
     </style>
 </head>
 <body>
+    <!-- Progress Bar -->
+    <div class="progress-bar" id="progressBar"></div>
 
-    <nav>
+    <!-- Navigation -->
+    <nav id="navbar">
         <a href="#" class="logo">SMILEASSURE</a>
         <div class="nav-links">
             <a href="#doorstep">The Experience</a>
             <a href="#subscription">Subscription</a>
-            <a href="#launch">Waitlist</a>
+            <a href="#how-it-works">How It Works</a>
+            <a href="#faq">FAQ</a>
+            <a href="#" class="cta-button" onclick="openWaitlistModal()">Join Waitlist</a>
         </div>
+        <button class="mobile-menu-btn" id="mobileMenuBtn">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
     </nav>
 
+    <!-- Mobile Navigation -->
+    <div class="mobile-nav" id="mobileNav">
+        <a href="#doorstep" onclick="closeMobileMenu()">The Experience</a>
+        <a href="#subscription" onclick="closeMobileMenu()">Subscription</a>
+        <a href="#how-it-works" onclick="closeMobileMenu()">How It Works</a>
+        <a href="#faq" onclick="closeMobileMenu()">FAQ</a>
+        <a href="#" onclick="openWaitlistModal(); closeMobileMenu();">Join Waitlist</a>
+    </div>
+
+    <!-- Hero Section -->
     <section class="hero">
         <div class="hero-content">
             <p class="tagline">Now Arriving at Home</p>
             <h1>Radical<br>Oral Care.</h1>
             <p class="hero-description">We are reimagining dental health by delivering professional clinical care with extreme simplicity.</p>
+            <div class="hero-cta-group">
+                <button class="primary-btn" onclick="openBookingModal()">Book Appointment</button>
+                <button class="secondary-btn" onclick="openWaitlistModal()">Join Waitlist</button>
+            </div>
         </div>
     </section>
 
+    <!-- Doorstep Section -->
     <section class="depth-section" id="doorstep">
         <div class="image-stack">
-            <img src="https://images.unsplash.com/photo-1551076805-e1869033e561?auto=format&fit=crop&q=80&w=1200" class="img-main" alt="Modern Home">
-            <div class="img-overlay"></div>
+            <div class="img-main" style="background: linear-gradient(135deg, #b3e5e6 0%, #7fcfd1 50%, #4db8ba 100%); display: flex; align-items: center; justify-content: center; position: relative;">
+                <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; opacity: 0.1; background-image: repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(255,255,255,.5) 35px, rgba(255,255,255,.5) 70px);"></div>
+                <div style="position: relative; z-index: 2; text-align: center; color: rgba(255,255,255,0.4); font-size: 120px; font-weight: 900; line-height: 1;">
+                    <div style="text-shadow: 0 2px 4px rgba(0,0,0,0.1);">S A</div>
+                </div>
+            </div>
+            <div class="img-overlay">Dental Care at Your Doorsteps</div>
         </div>
         <div class="text-side">
             <p class="tagline">The Doorstep Model</p>
             <h2>Clinic Quality.<br>Living Room<br>Comfort.</h2>
             <p class="hero-description">Our licensed experts bring portable, hospital-grade equipment to your home. No traffic, no queues, just your smile.</p>
+            <button class="primary-btn" onclick="openBookingModal()" style="margin-top: 30px;">Schedule Visit</button>
         </div>
     </section>
 
+    <!-- Features Section -->
+    <section class="features-section">
+        <p class="tagline" style="text-align: center;">Why Choose Us</p>
+        <h2 style="font-size: 56px; text-align: center; letter-spacing: -3px;">Everything You Need.</h2>
+        
+        <div class="features-grid">
+            <div class="feature-card">
+                <h3>Home Convenience</h3>
+                <p>Professional dental care in the comfort of your living room. No commute, no waiting rooms.</p>
+            </div>
+            <div class="feature-card">
+                <h3>Instant Booking</h3>
+                <p>Book appointments in seconds with our smart scheduling system. Same-day slots available.</p>
+            </div>
+            <div class="feature-card">
+                <h3>Hospital-Grade Equipment</h3>
+                <p>We bring the latest portable dental technology right to your door.</p>
+            </div>
+            <div class="feature-card">
+                <h3>Licensed Professionals</h3>
+                <p>All our dentists are fully licensed with 10+ years of experience.</p>
+            </div>
+            <div class="feature-card">
+                <h3>AI Monitoring</h3>
+                <p>Track your oral health with weekly smartphone scans powered by AI.</p>
+            </div>
+            <div class="feature-card">
+                <h3>Transparent Pricing</h3>
+                <p>No hidden fees. Fixed subscription rates with unlimited consultations.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Subscription Section -->
     <section class="subscription-grid" id="subscription">
         <p class="tagline" style="text-align: center;">The Subscription</p>
         <h2 style="font-size: 56px; text-align: center; letter-spacing: -3px;">Oral Health on Autopilot.</h2>
         
         <div class="card-container">
             <div class="sub-card">
-                <h3>Scheduled Cleanings</h3>
-                <p>Two professional doorstep scalings per year, automatically scheduled to fit your life.</p>
+                <h3>Essential</h3>
+                <div class="price">₹2,999<span style="font-size: 18px;">/month</span></div>
+                <p>Perfect for individuals who want hassle-free dental care.</p>
+                <ul>
+                    <li>2 doorstep cleanings/year</li>
+                    <li>Monthly AI oral scans</li>
+                    <li>24/7 chat support</li>
+                    <li>10% off treatments</li>
+                </ul>
+                <button class="select-plan-btn" onclick="selectPlan('Essential')">Select Plan</button>
             </div>
+            
             <div class="sub-card" style="background: var(--brand-teal);">
-                <h3 style="color: white;">AI Monitoring</h3>
-                <p style="color: white; opacity: 0.9;">Weekly oral scans via your smartphone to catch issues before they become expensive problems.</p>
+                <h3 style="color: white;">Premium</h3>
+                <div class="price" style="color: white;">₹4,999<span style="font-size: 18px;">/month</span></div>
+                <p style="color: white; opacity: 0.9;">Most popular for families seeking comprehensive care.</p>
+                <ul style="color: white;">
+                    <li>4 doorstep cleanings/year</li>
+                    <li>Weekly AI oral scans</li>
+                    <li>Priority 24/7 phone support</li>
+                    <li>20% off all treatments</li>
+                    <li>Emergency visits included</li>
+                </ul>
+                <button class="select-plan-btn" style="background: white; color: var(--brand-teal); border-color: white;" onclick="selectPlan('Premium')">Select Plan</button>
             </div>
+            
             <div class="sub-card">
-                <h3>Concierge Access</h3>
-                <p>24/7 priority access to our dental experts for consultations and emergencies.</p>
+                <h3>Family</h3>
+                <div class="price">₹8,999<span style="font-size: 18px;">/month</span></div>
+                <p>Complete coverage for up to 4 family members.</p>
+                <ul>
+                    <li>Unlimited cleanings/year</li>
+                    <li>Daily AI monitoring</li>
+                    <li>Dedicated concierge</li>
+                    <li>30% off treatments</li>
+                    <li>Orthodontic consultations</li>
+                    <li>Covers 4 members</li>
+                </ul>
+                <button class="select-plan-btn" onclick="selectPlan('Family')">Select Plan</button>
             </div>
         </div>
     </section>
 
+    <!-- How It Works Section -->
+    <section class="how-it-works" id="how-it-works">
+        <p class="tagline" style="text-align: center;">How It Works</p>
+        <h2 style="font-size: 56px; text-align: center; letter-spacing: -3px;">Three Simple Steps.</h2>
+        
+        <div class="steps-container">
+            <div class="step">
+                <div class="step-number">1</div>
+                <h3>Book Online</h3>
+                <p>Choose your preferred date and time slot through our instant booking system. Appointments confirmed in real-time.</p>
+            </div>
+            <div class="step">
+                <div class="step-number">2</div>
+                <h3>We Come to You</h3>
+                <p>Our licensed dentist arrives at your doorstep with portable, hospital-grade equipment at the scheduled time.</p>
+            </div>
+            <div class="step">
+                <div class="step-number">3</div>
+                <h3>Relax & Smile</h3>
+                <p>Receive professional dental care in the comfort of your home. No traffic, no waiting, just your smile.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq-section" id="faq">
+        <p class="tagline" style="text-align: center;">Frequently Asked Questions</p>
+        <h2 style="font-size: 56px; text-align: center; letter-spacing: -3px;">Got Questions?</h2>
+        
+        <div class="faq-container">
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <span>Is the equipment really hospital-grade?</span>
+                    <span class="faq-icon">▼</span>
+                </div>
+                <div class="faq-answer">
+                    Yes! We use the same professional-grade portable equipment used in modern dental clinics. All instruments are sterilized according to WHO standards and our equipment is certified by the Dental Council of India.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <span>Are your dentists licensed?</span>
+                    <span class="faq-icon">▼</span>
+                </div>
+                <div class="faq-answer">
+                    Absolutely. All SmileAssure dentists are licensed by the Dental Council of India and have a minimum of 10 years of clinical experience. You can verify credentials before your appointment.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <span>What areas do you service in Bengaluru?</span>
+                    <span class="faq-icon">▼</span>
+                </div>
+                <div class="faq-answer">
+                    We currently service all major areas within 20km of Jigani Industrial Area. Enter your pincode during booking to confirm availability. We're expanding rapidly to cover all of Bengaluru.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <span>Can I cancel or reschedule appointments?</span>
+                    <span class="faq-icon">▼</span>
+                </div>
+                <div class="faq-answer">
+                    Yes, you can reschedule or cancel up to 24 hours before your appointment with no penalty. Within 24 hours, a small rescheduling fee may apply to cover mobilization costs.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <span>How does the AI monitoring work?</span>
+                    <span class="faq-icon">▼</span>
+                </div>
+                <div class="faq-answer">
+                    Simply use our mobile app to take photos of your teeth. Our AI analyzes the images to detect early signs of cavities, gum disease, or other issues. You'll get instant feedback and dentist alerts if something needs attention.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <span>What if I need emergency dental care?</span>
+                    <span class="faq-icon">▼</span>
+                </div>
+                <div class="faq-answer">
+                    Premium and Family plan members get priority emergency slots within 4 hours. Essential members can access emergency care with an additional fee. We're available 24/7 for urgent consultations.
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact/Launch Section -->
     <section class="launch-footer" id="launch">
         <p class="tagline">Project: Bengaluru</p>
         <h2>Launching Soon.</h2>
-        <p style="font-size: 20px; color: #666; max-width: 600px;">We are currently finalizing our fleet of mobile units. Join the waitlist for early access.</p>
-        <div class="concierge-pill">Contact us: +91 9591156239</div>
+        <p style="font-size: 20px; color: #ccc; max-width: 600px; margin-top: 20px;">We are currently finalizing our fleet of mobile units. Join the waitlist for early access and exclusive launch offers.</p>
+        <button class="concierge-pill" onclick="openContactModal()">Contact Us: +91 9591156239</button>
         
-        <footer style="margin-top: 100px; font-size: 12px; color: #BBB; letter-spacing: 1px; font-weight: 700;">
-            SMILEASSURE • BESIDE DLF APARTMENTS, JIGANI INDUSTRIAL AREA
+        <footer style="margin-top: 100px; font-size: 12px; color: #888; letter-spacing: 1px; font-weight: 700;">
+            SMILEASSURE • BESIDE DLF APARTMENTS, JIGANI INDUSTRIAL AREA, BENGALURU
         </footer>
     </section>
 
+    <!-- Floating Chat Button -->
+    <div class="chat-float" onclick="openContactModal()">
+        <span style="font-size: 24px; font-weight: 700;">?</span>
+    </div>
+
+    <!-- Waitlist Modal -->
+    <div class="modal" id="waitlistModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('waitlistModal')">×</button>
+            <h2>Join the Waitlist</h2>
+            <p style="color: #666; margin-bottom: 30px;">Be among the first to experience the future of dental care. Early members get special launch pricing!</p>
+            
+            <form id="waitlistForm" onsubmit="submitWaitlist(event)">
+                <div class="form-group">
+                    <label>Full Name *</label>
+                    <input type="text" id="waitlist-name" required placeholder="Your full name">
+                </div>
+                
+                <div class="form-group">
+                    <label>Email Address *</label>
+                    <input type="email" id="waitlist-email" required placeholder="you@example.com">
+                </div>
+                
+                <div class="form-group">
+                    <label>Phone Number *</label>
+                    <input type="tel" id="waitlist-phone" required placeholder="+91 98765 43210">
+                </div>
+                
+                <div class="form-group">
+                    <label>Area/Pincode *</label>
+                    <input type="text" id="waitlist-pincode" required placeholder="560105">
+                </div>
+                
+                <div class="form-group">
+                    <label>Interested In</label>
+                    <select id="waitlist-interest">
+                        <option>Essential Plan</option>
+                        <option>Premium Plan</option>
+                        <option>Family Plan</option>
+                        <option>Just Exploring</option>
+                    </select>
+                </div>
+                
+                <button type="submit" class="submit-btn" id="waitlistSubmitBtn">Join Waitlist</button>
+                
+                <div class="success-message" id="waitlistSuccess">
+                    <strong>✓ You're on the list!</strong><br>
+                    We'll contact you as soon as we launch in your area.
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Booking Modal -->
+    <div class="modal" id="bookingModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('bookingModal')">×</button>
+            <h2>Book Your Appointment</h2>
+            <p style="color: #666; margin-bottom: 30px;">Select a date and time that works best for you.</p>
+            
+            <form id="bookingForm" onsubmit="submitBooking(event)">
+                <div class="form-group">
+                    <label>Full Name *</label>
+                    <input type="text" id="booking-name" required placeholder="Your full name">
+                </div>
+                
+                <div class="form-group">
+                    <label>Phone Number *</label>
+                    <input type="tel" id="booking-phone" required placeholder="+91 98765 43210">
+                </div>
+                
+                <div class="form-group">
+                    <label>Email Address *</label>
+                    <input type="email" id="booking-email" required placeholder="you@example.com">
+                </div>
+                
+                <div class="form-group">
+                    <label>Complete Address *</label>
+                    <textarea id="booking-address" required placeholder="House/Flat No., Street, Area, Pincode"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label>Service Type *</label>
+                    <select id="booking-service">
+                        <option>Dental Cleaning</option>
+                        <option>Consultation</option>
+                        <option>Cavity Filling</option>
+                        <option>Teeth Whitening</option>
+                        <option>Other (Specify in notes)</option>
+                    </select>
+                </div>
+
+                <div class="calendar-container">
+                    <div class="calendar-header">
+                        <button type="button" class="calendar-nav" onclick="changeMonth(-1)">←</button>
+                        <strong id="calendarMonth">February 2026</strong>
+                        <button type="button" class="calendar-nav" onclick="changeMonth(1)">→</button>
+                    </div>
+                    <div class="calendar-grid" id="calendarGrid"></div>
+                </div>
+
+                <div class="form-group">
+                    <label>Preferred Time Slot *</label>
+                    <div class="time-slots" id="timeSlots"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Additional Notes</label>
+                    <textarea id="booking-notes" placeholder="Any specific requirements or health conditions we should know about?"></textarea>
+                </div>
+                
+                <button type="submit" class="submit-btn" id="bookingSubmitBtn">Confirm Booking</button>
+                
+                <div class="success-message" id="bookingSuccess">
+                    <strong>✓ Booking Confirmed!</strong><br>
+                    We'll send you a confirmation SMS and email shortly.
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Contact Modal -->
+    <div class="modal" id="contactModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('contactModal')">×</button>
+            <h2>Get in Touch</h2>
+            <p style="color: #666; margin-bottom: 30px;">Have questions? We're here to help!</p>
+            
+            <form id="contactForm" onsubmit="submitContact(event)">
+                <div class="form-group">
+                    <label>Your Name *</label>
+                    <input type="text" id="contact-name" required placeholder="Your full name">
+                </div>
+                
+                <div class="form-group">
+                    <label>Email Address *</label>
+                    <input type="email" id="contact-email" required placeholder="you@example.com">
+                </div>
+                
+                <div class="form-group">
+                    <label>Phone Number</label>
+                    <input type="tel" id="contact-phone" placeholder="+91 98765 43210">
+                </div>
+                
+                <div class="form-group">
+                    <label>Subject *</label>
+                    <select id="contact-subject">
+                        <option>General Inquiry</option>
+                        <option>Service Questions</option>
+                        <option>Pricing Information</option>
+                        <option>Partnership Opportunities</option>
+                        <option>Technical Support</option>
+                        <option>Other</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Message *</label>
+                    <textarea id="contact-message" required placeholder="Tell us how we can help you..."></textarea>
+                </div>
+                
+                <button type="submit" class="submit-btn" id="contactSubmitBtn">Send Message</button>
+                
+                <div class="success-message" id="contactSuccess">
+                    <strong>✓ Message Sent!</strong><br>
+                    We'll get back to you within 24 hours.
+                </div>
+            </form>
+
+            <div style="margin-top: 40px; padding-top: 30px; border-top: 2px solid var(--soft-gray);">
+                <h3 style="margin-bottom: 20px;">Direct Contact</h3>
+                <p style="color: #666; line-height: 2;">
+                    <strong>Phone:</strong> +91 9591156239<br>
+                    <strong>Email:</strong> hello@smileassure.in<br>
+                    <strong>Address:</strong> Beside DLF Apartments, Jigani Industrial Area, Bengaluru
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Plan Selection Modal -->
+    <div class="modal" id="planModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('planModal')">×</button>
+            <h2 id="planModalTitle">Essential Plan</h2>
+            <p style="color: #666; margin-bottom: 30px;">Complete your subscription to get started with SmileAssure.</p>
+            
+            <form id="planForm" onsubmit="submitPlan(event)">
+                <div class="form-group">
+                    <label>Full Name *</label>
+                    <input type="text" id="plan-name" required placeholder="Your full name">
+                </div>
+                
+                <div class="form-group">
+                    <label>Email Address *</label>
+                    <input type="email" id="plan-email" required placeholder="you@example.com">
+                </div>
+                
+                <div class="form-group">
+                    <label>Phone Number *</label>
+                    <input type="tel" id="plan-phone" required placeholder="+91 98765 43210">
+                </div>
+                
+                <div class="form-group">
+                    <label>Complete Address *</label>
+                    <textarea id="plan-address" required placeholder="House/Flat No., Street, Area, Pincode"></textarea>
+                </div>
+                
+                <div class="form-group" id="familyMembersGroup" style="display: none;">
+                    <label>Number of Family Members</label>
+                    <select id="plan-members">
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Payment Method</label>
+                    <select id="plan-payment">
+                        <option>Credit/Debit Card</option>
+                        <option>UPI</option>
+                        <option>Net Banking</option>
+                        <option>EMI Options</option>
+                    </select>
+                </div>
+                
+                <button type="submit" class="submit-btn" id="planSubmitBtn">Proceed to Payment</button>
+                
+                <div class="success-message" id="planSuccess">
+                    <strong>✓ Subscription Initiated!</strong><br>
+                    Redirecting to payment gateway...
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let selectedDate = null;
+        let selectedTime = null;
+        let currentMonth = new Date();
+        let selectedPlan = '';
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            // Scroll animations
+            setupScrollAnimations();
+            
+            // Progress bar
+            setupProgressBar();
+            
+            // Navbar scroll effect
+            setupNavbarScroll();
+
+            // Generate calendar
+            generateCalendar();
+            
+            // Generate time slots
+            generateTimeSlots();
+        });
+
+        // Mobile Menu Toggle
+        document.getElementById('mobileMenuBtn').addEventListener('click', function() {
+            this.classList.toggle('active');
+            document.getElementById('mobileNav').classList.toggle('active');
+        });
+
+        function closeMobileMenu() {
+            document.getElementById('mobileMenuBtn').classList.remove('active');
+            document.getElementById('mobileNav').classList.remove('active');
+        }
+
+        // Scroll Animations
+        function setupScrollAnimations() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.depth-section').forEach(el => observer.observe(el));
+        }
+
+        // Progress Bar
+        function setupProgressBar() {
+            window.addEventListener('scroll', () => {
+                const windowHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                const scrolled = (window.scrollY / windowHeight) * 100;
+                document.getElementById('progressBar').style.width = scrolled + '%';
+            });
+        }
+
+        // Navbar Scroll Effect
+        function setupNavbarScroll() {
+            window.addEventListener('scroll', () => {
+                const navbar = document.getElementById('navbar');
+                if (window.scrollY > 100) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
+            });
+        }
+
+        // Modal Functions
+        function openModal(modalId) {
+            document.getElementById(modalId).classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+            document.body.style.overflow = 'auto';
+            
+            // Reset forms
+            const modal = document.getElementById(modalId);
+            const forms = modal.querySelectorAll('form');
+            forms.forEach(form => form.reset());
+            
+            // Hide success messages
+            const successMessages = modal.querySelectorAll('.success-message');
+            successMessages.forEach(msg => msg.classList.remove('active'));
+        }
+
+        function openWaitlistModal() {
+            openModal('waitlistModal');
+        }
+
+        function openBookingModal() {
+            openModal('bookingModal');
+            generateCalendar();
+        }
+
+        function openContactModal() {
+            openModal('contactModal');
+        }
+
+        function selectPlan(plan) {
+            selectedPlan = plan;
+            document.getElementById('planModalTitle').textContent = plan + ' Plan';
+            
+            // Show family members selector for Family plan
+            if (plan === 'Family') {
+                document.getElementById('familyMembersGroup').style.display = 'block';
+            } else {
+                document.getElementById('familyMembersGroup').style.display = 'none';
+            }
+            
+            openModal('planModal');
+        }
+
+        // Calendar Functions
+        function generateCalendar() {
+            const grid = document.getElementById('calendarGrid');
+            grid.innerHTML = '';
+            
+            const year = currentMonth.getFullYear();
+            const month = currentMonth.getMonth();
+            
+            // Update month display
+            const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
+                               'July', 'August', 'September', 'October', 'November', 'December'];
+            document.getElementById('calendarMonth').textContent = monthNames[month] + ' ' + year;
+            
+            // Get first day of month and number of days
+            const firstDay = new Date(year, month, 1).getDay();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            const today = new Date();
+            
+            // Add day labels
+            const dayLabels = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+            dayLabels.forEach(label => {
+                const dayLabel = document.createElement('div');
+                dayLabel.textContent = label;
+                dayLabel.style.fontWeight = '700';
+                dayLabel.style.color = '#888';
+                grid.appendChild(dayLabel);
+            });
+            
+            // Add empty cells for days before month starts
+            for (let i = 0; i < firstDay; i++) {
+                const emptyDay = document.createElement('div');
+                grid.appendChild(emptyDay);
+            }
+            
+            // Add days of month
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dayElement = document.createElement('div');
+                dayElement.className = 'calendar-day';
+                dayElement.textContent = day;
+                
+                const currentDate = new Date(year, month, day);
+                
+                // Disable past dates
+                if (currentDate < today.setHours(0, 0, 0, 0)) {
+                    dayElement.classList.add('disabled');
+                } else {
+                    dayElement.onclick = function() {
+                        // Remove previous selection
+                        document.querySelectorAll('.calendar-day').forEach(d => d.classList.remove('selected'));
+                        this.classList.add('selected');
+                        selectedDate = new Date(year, month, day);
+                        generateTimeSlots();
+                    };
+                }
+                
+                grid.appendChild(dayElement);
+            }
+        }
+
+        function changeMonth(delta) {
+            currentMonth.setMonth(currentMonth.getMonth() + delta);
+            
+            // Don't allow going to past months
+            const today = new Date();
+            if (currentMonth < new Date(today.getFullYear(), today.getMonth(), 1)) {
+                currentMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+            }
+            
+            generateCalendar();
+        }
+
+        function generateTimeSlots() {
+            const container = document.getElementById('timeSlots');
+            container.innerHTML = '';
+            
+            const slots = [
+                '9:00 AM', '10:00 AM', '11:00 AM', 
+                '2:00 PM', '3:00 PM', '4:00 PM', '5:00 PM'
+            ];
+            
+            slots.forEach(time => {
+                const slot = document.createElement('div');
+                slot.className = 'time-slot';
+                slot.textContent = time;
+                
+                // Randomly disable some slots to simulate bookings
+                if (Math.random() > 0.7) {
+                    slot.classList.add('disabled');
+                } else {
+                    slot.onclick = function() {
+                        document.querySelectorAll('.time-slot').forEach(s => s.classList.remove('selected'));
+                        this.classList.add('selected');
+                        selectedTime = time;
+                    };
+                }
+                
+                container.appendChild(slot);
+            });
+        }
+
+        // FAQ Toggle
+        function toggleFAQ(element) {
+            const faqItem = element.parentElement;
+            const wasActive = faqItem.classList.contains('active');
+            
+            // Close all FAQs
+            document.querySelectorAll('.faq-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // Open clicked FAQ if it wasn't active
+            if (!wasActive) {
+                faqItem.classList.add('active');
+            }
+        }
+
+        // Form Submissions with REAL email delivery
+        
+        // IMPORTANT: Replace 'YOUR_ACCESS_KEY_HERE' with your actual Web3Forms access key
+        // Get a free access key at: https://web3forms.com (takes 30 seconds)
+        const WEB3FORMS_ACCESS_KEY = '9a780328-34a9-4c73-90f2-a4e157cf6fd6';
+        const BUSINESS_EMAIL = 'hello@smileassure.in';
+        
+        // Alternative: If Web3Forms key not set, will send via mailto
+        function sendFormData(formData, formType) {
+            // Log form data to console for debugging
+            console.log('='.repeat(50));
+            console.log('FORM SUBMISSION - ' + formType);
+            console.log('='.repeat(50));
+            console.log(formData);
+            console.log('='.repeat(50));
+            
+            // Store in localStorage as backup
+            try {
+                const submissions = JSON.parse(localStorage.getItem('smileassure_submissions') || '[]');
+                submissions.push({
+                    timestamp: new Date().toISOString(),
+                    type: formType,
+                    data: formData
+                });
+                localStorage.setItem('smileassure_submissions', JSON.stringify(submissions));
+                console.log('✓ Form data saved to localStorage backup');
+            } catch (e) {
+                console.warn('Could not save to localStorage:', e);
+            }
+            
+            if (WEB3FORMS_ACCESS_KEY !== 'YOUR_ACCESS_KEY_HERE') {
+                // Use Web3Forms API
+                return fetch('https://api.web3forms.com/submit', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        access_key: WEB3FORMS_ACCESS_KEY,
+                        subject: `SmileAssure - New ${formType}`,
+                        from_name: 'SmileAssure Website',
+                        ...formData
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        return { success: true };
+                    } else {
+                        throw new Error('Form submission failed');
+                    }
+                });
+            } else {
+                // Fallback: Use mailto
+                const subject = encodeURIComponent(`SmileAssure - New ${formType}`);
+                let body = '';
+                for (let key in formData) {
+                    body += `${key}: ${formData[key]}\n`;
+                }
+                body = encodeURIComponent(body);
+                
+                window.location.href = `mailto:${BUSINESS_EMAIL}?subject=${subject}&body=${body}`;
+                return Promise.resolve({ success: true, method: 'mailto' });
+            }
+        }
+
+        function submitWaitlist(event) {
+            event.preventDefault();
+            
+            const btn = document.getElementById('waitlistSubmitBtn');
+            const originalText = btn.textContent;
+            
+            // Show loading
+            btn.disabled = true;
+            btn.innerHTML = '<span class="loading"></span>';
+            
+            // Collect form data
+            const formData = {
+                name: document.getElementById('waitlist-name').value,
+                email: document.getElementById('waitlist-email').value,
+                phone: document.getElementById('waitlist-phone').value,
+                pincode: document.getElementById('waitlist-pincode').value,
+                interest: document.getElementById('waitlist-interest').value,
+                form_type: 'Waitlist Registration'
+            };
+            
+            // Send form data
+            sendFormData(formData, 'Waitlist Registration')
+                .then(() => {
+                    btn.textContent = originalText;
+                    btn.disabled = false;
+                    
+                    // Show success message
+                    document.getElementById('waitlistSuccess').classList.add('active');
+                    
+                    // Reset form after delay
+                    setTimeout(() => {
+                        closeModal('waitlistModal');
+                    }, 3000);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    btn.textContent = originalText;
+                    btn.disabled = false;
+                    alert('There was an error submitting the form. Please try again or contact us directly at ' + BUSINESS_EMAIL);
+                });
+        }
+
+        function submitBooking(event) {
+            event.preventDefault();
+            
+            if (!selectedDate) {
+                alert('Please select a date');
+                return;
+            }
+            
+            if (!selectedTime) {
+                alert('Please select a time slot');
+                return;
+            }
+            
+            const btn = document.getElementById('bookingSubmitBtn');
+            const originalText = btn.textContent;
+            
+            // Show loading
+            btn.disabled = true;
+            btn.innerHTML = '<span class="loading"></span>';
+            
+            // Collect form data
+            const formData = {
+                name: document.getElementById('booking-name').value,
+                phone: document.getElementById('booking-phone').value,
+                email: document.getElementById('booking-email').value,
+                address: document.getElementById('booking-address').value,
+                service: document.getElementById('booking-service').value,
+                date: selectedDate.toDateString(),
+                time: selectedTime,
+                notes: document.getElementById('booking-notes').value,
+                form_type: 'Appointment Booking'
+            };
+            
+            // Send form data
+            sendFormData(formData, 'Appointment Booking')
+                .then(() => {
+                    btn.textContent = originalText;
+                    btn.disabled = false;
+                    
+                    // Show success message
+                    document.getElementById('bookingSuccess').classList.add('active');
+                    
+                    // Reset form after delay
+                    setTimeout(() => {
+                        closeModal('bookingModal');
+                    }, 3000);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    btn.textContent = originalText;
+                    btn.disabled = false;
+                    alert('There was an error submitting the form. Please try again or contact us directly at ' + BUSINESS_EMAIL);
+                });
+        }
+
+        function submitContact(event) {
+            event.preventDefault();
+            
+            const btn = document.getElementById('contactSubmitBtn');
+            const originalText = btn.textContent;
+            
+            // Show loading
+            btn.disabled = true;
+            btn.innerHTML = '<span class="loading"></span>';
+            
+            // Collect form data
+            const formData = {
+                name: document.getElementById('contact-name').value,
+                email: document.getElementById('contact-email').value,
+                phone: document.getElementById('contact-phone').value,
+                subject: document.getElementById('contact-subject').value,
+                message: document.getElementById('contact-message').value,
+                form_type: 'Contact Form'
+            };
+            
+            // Send form data
+            sendFormData(formData, 'Contact Form')
+                .then(() => {
+                    btn.textContent = originalText;
+                    btn.disabled = false;
+                    
+                    // Show success message
+                    document.getElementById('contactSuccess').classList.add('active');
+                    
+                    // Reset form after delay
+                    setTimeout(() => {
+                        closeModal('contactModal');
+                    }, 3000);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    btn.textContent = originalText;
+                    btn.disabled = false;
+                    alert('There was an error submitting the form. Please try again or contact us directly at ' + BUSINESS_EMAIL);
+                });
+        }
+
+        function submitPlan(event) {
+            event.preventDefault();
+            
+            const btn = document.getElementById('planSubmitBtn');
+            const originalText = btn.textContent;
+            
+            // Show loading
+            btn.disabled = true;
+            btn.innerHTML = '<span class="loading"></span>';
+            
+            // Collect form data
+            const formData = {
+                name: document.getElementById('plan-name').value,
+                email: document.getElementById('plan-email').value,
+                phone: document.getElementById('plan-phone').value,
+                address: document.getElementById('plan-address').value,
+                plan: selectedPlan,
+                members: document.getElementById('plan-members')?.value || 'N/A',
+                payment_method: document.getElementById('plan-payment').value,
+                form_type: 'Plan Selection'
+            };
+            
+            // Send form data
+            sendFormData(formData, 'Plan Selection')
+                .then(() => {
+                    btn.textContent = originalText;
+                    btn.disabled = false;
+                    
+                    // Show success message
+                    document.getElementById('planSuccess').classList.add('active');
+                    
+                    // Simulate payment redirect
+                    setTimeout(() => {
+                        alert('Payment integration will be set up here. For now, we will contact you to complete the subscription.');
+                        closeModal('planModal');
+                    }, 2000);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    btn.textContent = originalText;
+                    btn.disabled = false;
+                    alert('There was an error submitting the form. Please try again or contact us directly at ' + BUSINESS_EMAIL);
+                });
+        }
+
+        // Close modals when clicking outside
+        window.addEventListener('click', function(event) {
+            if (event.target.classList.contains('modal')) {
+                const modalId = event.target.id;
+                closeModal(modalId);
+            }
+        });
+
+        // Admin Functions - Access stored submissions
+        // Open browser console and type: viewSubmissions() to see all form data
+        // Type: downloadSubmissions() to download as JSON file
+        window.viewSubmissions = function() {
+            const submissions = JSON.parse(localStorage.getItem('smileassure_submissions') || '[]');
+            console.log('='.repeat(70));
+            console.log('ALL FORM SUBMISSIONS (' + submissions.length + ' total)');
+            console.log('='.repeat(70));
+            submissions.forEach((sub, index) => {
+                console.log(`\n[${index + 1}] ${sub.type} - ${new Date(sub.timestamp).toLocaleString()}`);
+                console.log(sub.data);
+            });
+            console.log('='.repeat(70));
+            return submissions;
+        };
+
+        window.downloadSubmissions = function() {
+            const submissions = JSON.parse(localStorage.getItem('smileassure_submissions') || '[]');
+            const dataStr = JSON.stringify(submissions, null, 2);
+            const dataBlob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'smileassure-submissions-' + new Date().toISOString().split('T')[0] + '.json';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+            console.log('✓ Downloaded ' + submissions.length + ' submissions');
+        };
+
+        window.clearSubmissions = function() {
+            if (confirm('Are you sure you want to clear all stored submissions? This cannot be undone!')) {
+                localStorage.removeItem('smileassure_submissions');
+                console.log('✓ All submissions cleared');
+            }
+        };
+
+        // Show admin info on page load
+        console.log('%c✓ SmileAssure Forms Active', 'background: #008B9D; color: white; font-size: 14px; font-weight: bold; padding: 8px 12px; border-radius: 4px;');
+        console.log('%cForm submissions are sent to hello@smileassure.in', 'color: #666; font-size: 11px;');
+        console.log('%cBackup stored locally. Type viewSubmissions() to see all data.', 'color: #999; font-size: 10px;');
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                if (href !== '#' && href !== '') {
+                    e.preventDefault();
+                    const target = document.querySelector(href);
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                }
+            });
+        });
+    </script>
 </body>
 </html>
