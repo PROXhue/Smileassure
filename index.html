@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SmileAssure | The New Standard of Oral Health</title>
+    
+    <!-- Razorpay Payment Gateway -->
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    
     <style>
         :root {
             --brand-teal: #008B9D;
@@ -1086,6 +1090,9 @@
     <section class="subscription-grid" id="subscription">
         <p class="tagline" style="text-align: center;">The Subscription</p>
         <h2 style="font-size: 56px; text-align: center; letter-spacing: -3px;">Oral Health on Autopilot.</h2>
+        <p style="text-align: center; color: rgba(255,255,255,0.6); margin-top: 20px; font-size: 14px;">
+            🔒 Secure payments powered by Razorpay | All major payment methods accepted
+        </p>
         
         <div class="card-container">
             <div class="sub-card">
@@ -1454,13 +1461,14 @@
                 </div>
                 
                 <div class="form-group">
-                    <label>Payment Method</label>
+                    <label>Preferred Payment Method</label>
                     <select id="plan-payment">
+                        <option>UPI (Google Pay, PhonePe, Paytm)</option>
                         <option>Credit/Debit Card</option>
-                        <option>UPI</option>
                         <option>Net Banking</option>
-                        <option>EMI Options</option>
+                        <option>Wallets (Paytm, Mobikwik, etc.)</option>
                     </select>
+                    <p style="font-size: 12px; color: #999; margin-top: 8px;">All payment methods are processed securely via Razorpay</p>
                 </div>
                 
                 <button type="submit" class="submit-btn" id="planSubmitBtn">Proceed to Payment</button>
@@ -1713,6 +1721,167 @@
         const WEB3FORMS_ACCESS_KEY = '9a780328-34a9-4c73-90f2-a4e157cf6fd6';
         const BUSINESS_EMAIL = 'hello@smileassure.in';
         
+        // RAZORPAY CONFIGURATION
+        // Test Key (for testing) - Replace with live key in production
+        // Get your keys at: https://dashboard.razorpay.com/app/keys
+        const RAZORPAY_KEY_ID = 'rzp_test_SGU7t1JwaBpgXg'; // Replace with your actual key
+        
+        // Subscription Plans Pricing (in paise - 1 Rupee = 100 paise)
+        const PLANS = {
+            'Essential': {
+                price: 299900, // ₹2,999
+                currency: 'INR',
+                name: 'Essential Plan',
+                description: '2 doorstep cleanings/year + Monthly AI scans'
+            },
+            'Premium': {
+                price: 499900, // ₹4,999
+                currency: 'INR',
+                name: 'Premium Plan',
+                description: '4 doorstep cleanings/year + Weekly AI scans'
+            },
+            'Family': {
+                price: 899900, // ₹8,999
+                currency: 'INR',
+                name: 'Family Plan',
+                description: 'Unlimited cleanings + Coverage for 4 members'
+            }
+        };
+        
+        // ============================================
+        // RAZORPAY PAYMENT INTEGRATION
+        // ============================================
+        
+        function initializePayment(planData, customerData) {
+            const plan = PLANS[planData.plan];
+            
+            const options = {
+                "key": RAZORPAY_KEY_ID,
+                "amount": plan.price, // Amount in paise
+                "currency": plan.currency,
+                "name": "SmileAssure",
+                "description": plan.description,
+                "image": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='45' fill='%23008B9D'/%3E%3Ctext x='50' y='65' font-size='40' font-weight='900' fill='white' text-anchor='middle' font-family='Arial'%3ESA%3C/text%3E%3C/svg%3E",
+                
+                // Prefill customer data
+                "prefill": {
+                    "name": customerData.name,
+                    "email": customerData.email,
+                    "contact": customerData.phone
+                },
+                
+                // Notes (these will be sent to you with payment)
+                "notes": {
+                    "plan": planData.plan,
+                    "address": customerData.address,
+                    "members": customerData.members || 'N/A',
+                    "form_type": "Plan Subscription Payment"
+                },
+                
+                // Theme
+                "theme": {
+                    "color": "#008B9D"
+                },
+                
+                // Payment Success Handler
+                "handler": function (response) {
+                    handlePaymentSuccess(response, planData, customerData);
+                },
+                
+                // Modal options
+                "modal": {
+                    "ondismiss": function() {
+                        handlePaymentDismiss();
+                    }
+                }
+            };
+            
+            const rzp = new Razorpay(options);
+            
+            // Payment Failed Handler
+            rzp.on('payment.failed', function (response) {
+                handlePaymentFailure(response);
+            });
+            
+            rzp.open();
+        }
+        
+        function handlePaymentSuccess(response, planData, customerData) {
+            console.log('Payment Successful!', response);
+            
+            // Payment details
+            const paymentData = {
+                ...customerData,
+                plan: planData.plan,
+                payment_id: response.razorpay_payment_id,
+                payment_signature: response.razorpay_signature,
+                amount_paid: (PLANS[planData.plan].price / 100).toFixed(2),
+                payment_status: 'SUCCESS',
+                payment_method: 'Razorpay',
+                timestamp: new Date().toISOString()
+            };
+            
+            // Store payment locally
+            try {
+                const submissions = JSON.parse(localStorage.getItem('smileassure_submissions') || '[]');
+                submissions.push({
+                    timestamp: new Date().toISOString(),
+                    type: 'Payment Success - ' + planData.plan,
+                    data: paymentData
+                });
+                localStorage.setItem('smileassure_submissions', JSON.stringify(submissions));
+            } catch (e) {
+                console.warn('Could not save to localStorage:', e);
+            }
+            
+            // Send email notification
+            sendFormData(paymentData, 'Payment Successful - ' + planData.plan)
+                .then(() => {
+                    // Show success message
+                    document.getElementById('planSubmitBtn').textContent = 'Proceed to Payment';
+                    document.getElementById('planSubmitBtn').disabled = false;
+                    
+                    // Show success message
+                    const successMsg = document.getElementById('planSuccess');
+                    successMsg.innerHTML = '<strong>✓ Payment Successful!</strong><br>Payment ID: ' + response.razorpay_payment_id + '<br>We will contact you shortly to schedule your first appointment.';
+                    successMsg.classList.add('active');
+                    
+                    // Close modal after delay
+                    setTimeout(() => {
+                        closeModal('planModal');
+                    }, 5000);
+                })
+                .catch(error => {
+                    console.error('Error sending email:', error);
+                    alert('Payment successful but notification failed. Your Payment ID: ' + response.razorpay_payment_id);
+                });
+        }
+        
+        function handlePaymentFailure(response) {
+            console.error('Payment Failed:', response);
+            
+            const btn = document.getElementById('planSubmitBtn');
+            btn.textContent = 'Proceed to Payment';
+            btn.disabled = false;
+            
+            alert('Payment Failed!\n\nReason: ' + response.error.description + '\n\nPlease try again or contact us at +91 9591156239');
+        }
+        
+        function handlePaymentDismiss() {
+            console.log('Payment cancelled by user');
+            
+            const btn = document.getElementById('planSubmitBtn');
+            btn.textContent = 'Proceed to Payment';
+            btn.disabled = false;
+            
+            // Optional: Show message
+            // alert('Payment was cancelled. You can try again anytime.');
+        }
+        
+        // ============================================
+        // END PAYMENT INTEGRATION
+        // ============================================
+        
         // Alternative: If Web3Forms key not set, will send via mailto
         function sendFormData(formData, formType) {
             // Log form data to console for debugging
@@ -1922,39 +2091,40 @@
             btn.disabled = true;
             btn.innerHTML = '<span class="loading"></span>';
             
-            // Collect form data
-            const formData = {
+            // Collect customer data
+            const customerData = {
                 name: document.getElementById('plan-name').value,
                 email: document.getElementById('plan-email').value,
                 phone: document.getElementById('plan-phone').value,
                 address: document.getElementById('plan-address').value,
-                plan: selectedPlan,
-                members: document.getElementById('plan-members')?.value || 'N/A',
-                payment_method: document.getElementById('plan-payment').value,
-                form_type: 'Plan Selection'
+                members: document.getElementById('plan-members')?.value || 'N/A'
             };
             
-            // Send form data
-            sendFormData(formData, 'Plan Selection')
-                .then(() => {
-                    btn.textContent = originalText;
-                    btn.disabled = false;
+            const planData = {
+                plan: selectedPlan,
+                payment_method: document.getElementById('plan-payment').value
+            };
+            
+            // Small delay for UX
+            setTimeout(() => {
+                btn.textContent = 'Opening Payment Gateway...';
+                
+                // Initialize Razorpay payment
+                try {
+                    initializePayment(planData, customerData);
                     
-                    // Show success message
-                    document.getElementById('planSuccess').classList.add('active');
-                    
-                    // Simulate payment redirect
+                    // Reset button after payment modal opens
                     setTimeout(() => {
-                        alert('Payment integration will be set up here. For now, we will contact you to complete the subscription.');
-                        closeModal('planModal');
-                    }, 2000);
-                })
-                .catch(error => {
-                    console.error('Error:', error);
+                        btn.textContent = originalText;
+                        btn.disabled = false;
+                    }, 1000);
+                } catch (error) {
+                    console.error('Payment initialization error:', error);
                     btn.textContent = originalText;
                     btn.disabled = false;
-                    alert('There was an error submitting the form. Please try again or contact us directly at ' + BUSINESS_EMAIL);
-                });
+                    alert('Could not initialize payment. Please try again or contact us at ' + BUSINESS_EMAIL);
+                }
+            }, 500);
         }
 
         // Close modals when clicking outside
@@ -1981,6 +2151,23 @@
             return submissions;
         };
 
+        window.viewPayments = function() {
+            const submissions = JSON.parse(localStorage.getItem('smileassure_submissions') || '[]');
+            const payments = submissions.filter(sub => sub.type.includes('Payment'));
+            console.log('='.repeat(70));
+            console.log('PAYMENT HISTORY (' + payments.length + ' payments)');
+            console.log('='.repeat(70));
+            payments.forEach((payment, index) => {
+                console.log(`\n[${index + 1}] ${payment.data.plan} - ₹${payment.data.amount_paid}`);
+                console.log('Payment ID:', payment.data.payment_id);
+                console.log('Customer:', payment.data.name, '|', payment.data.email);
+                console.log('Date:', new Date(payment.timestamp).toLocaleString());
+            });
+            console.log('='.repeat(70));
+            console.log('Total Revenue: ₹' + payments.reduce((sum, p) => sum + parseFloat(p.data.amount_paid || 0), 0).toFixed(2));
+            return payments;
+        };
+
         window.downloadSubmissions = function() {
             const submissions = JSON.parse(localStorage.getItem('smileassure_submissions') || '[]');
             const dataStr = JSON.stringify(submissions, null, 2);
@@ -2003,10 +2190,16 @@
             }
         };
 
+        console.log('\n📊 Admin Commands:');
+        console.log('  viewSubmissions() - View all form submissions');
+        console.log('  viewPayments()    - View only successful payments');
+        console.log('  downloadSubmissions() - Download all data as JSON');
+        console.log('  clearSubmissions() - Clear all stored data\n');
+
         // Show admin info on page load
-        console.log('%c✓ SmileAssure Forms Active', 'background: #008B9D; color: white; font-size: 14px; font-weight: bold; padding: 8px 12px; border-radius: 4px;');
-        console.log('%cForm submissions are sent to hello@smileassure.in', 'color: #666; font-size: 11px;');
-        console.log('%cBackup stored locally. Type viewSubmissions() to see all data.', 'color: #999; font-size: 10px;');
+        console.log('%c✓ SmileAssure - FULLY FUNCTIONAL', 'background: #008B9D; color: white; font-size: 14px; font-weight: bold; padding: 8px 12px; border-radius: 4px;');
+        console.log('%cForms: hello@smileassure.in | Payments: Razorpay Integrated', 'color: #666; font-size: 11px;');
+        console.log('%cBackup stored locally. Type viewSubmissions() to see all data including payments.', 'color: #999; font-size: 10px;');
 
         // Smooth scroll for anchor links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
