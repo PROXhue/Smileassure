@@ -422,6 +422,9 @@
             cursor: pointer;
             position: relative;
             overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: 600px;
         }
 
         .sub-card::before {
@@ -467,6 +470,7 @@
         .sub-card ul {
             list-style: none;
             margin: 20px 0;
+            flex-grow: 1;
         }
 
         .sub-card li {
@@ -493,6 +497,7 @@
             font-weight: 700;
             cursor: pointer;
             transition: all 0.3s ease;
+            margin-top: auto;
         }
 
         .select-plan-btn:hover {
@@ -900,34 +905,12 @@
             box-shadow: 0 5px 20px rgba(0,139,157,0.4);
             transition: all 0.3s ease;
             z-index: 999;
+            font-size: 28px;
         }
 
         .chat-float:hover {
             transform: scale(1.1);
             box-shadow: 0 8px 30px rgba(0,139,157,0.6);
-        }
-
-        .chat-float::before {
-            content: '';
-            width: 20px;
-            height: 20px;
-            border: 3px solid white;
-            border-radius: 3px 3px 0 0;
-            border-bottom: none;
-            position: absolute;
-            top: 16px;
-            left: 20px;
-        }
-
-        .chat-float::after {
-            content: '';
-            width: 12px;
-            height: 12px;
-            background: white;
-            border-radius: 0 0 3px 3px;
-            position: absolute;
-            bottom: 18px;
-            left: 24px;
         }
 
         /* --- Responsive Design --- */
@@ -1289,7 +1272,11 @@
     </section>
 
     <!-- Floating Chat Button -->
-    <div class="chat-float" onclick="openContactModal()"></div>
+    <div class="chat-float" onclick="openContactModal()">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+        </svg>
+    </div>
 
     <!-- Waitlist Modal -->
     <div class="modal" id="waitlistModal">
@@ -1523,6 +1510,190 @@
             </form>
         </div>
     </div>
+
+    <!-- Terms & Conditions Modal -->
+    <div class="modal" id="termsModal">
+        <div class="modal-content" style="max-width: 800px;">
+            <button class="modal-close" onclick="closeModal('termsModal')">×</button>
+            <h2>Terms & Conditions</h2>
+            
+            <div style="max-height: 500px; overflow-y: auto; padding-right: 10px; color: #666; line-height: 1.8;">
+                <h3 style="color: #000; margin-top: 20px; margin-bottom: 10px;">1. Services</h3>
+                <p>SmileAssure provides at-home dental care services in Bengaluru. All services are performed by licensed dental professionals registered with the Dental Council of India.</p>
+
+                <h3 style="color: #000; margin-top: 20px; margin-bottom: 10px;">2. Booking & Appointments</h3>
+                <p>• Appointments must be booked at least 24 hours in advance</p>
+                <p>• Cancellations must be made 24 hours prior to avoid cancellation fees</p>
+                <p>• Rescheduling is subject to availability</p>
+                <p>• We reserve the right to cancel appointments due to unforeseen circumstances</p>
+
+                <h3 style="color: #000; margin-top: 20px; margin-bottom: 10px;">3. Payment Terms</h3>
+                <p>• All payments are processed securely through Razorpay</p>
+                <p>• Subscription plans are billed annually or as specified</p>
+                <p>• Refunds are subject to our refund policy</p>
+                <p>• Prices are subject to change with prior notice</p>
+
+                <h3 style="color: #000; margin-top: 20px; margin-bottom: 10px;">4. Service Area</h3>
+                <p>We currently service areas within 20km of Jigani Industrial Area, Bengaluru. Service availability is subject to location verification.</p>
+
+                <h3 style="color: #000; margin-top: 20px; margin-bottom: 10px;">5. Medical Information</h3>
+                <p>• Clients must disclose complete medical history and current medications</p>
+                <p>• We are not liable for complications arising from withheld medical information</p>
+                <p>• Emergency cases should contact emergency services immediately</p>
+
+                <h3 style="color: #000; margin-top: 20px; margin-bottom: 10px;">6. Liability</h3>
+                <p>• Services are provided by qualified professionals following standard protocols</p>
+                <p>• SmileAssure is not liable for pre-existing dental conditions</p>
+                <p>• Clients are responsible for following post-treatment care instructions</p>
+
+                <h3 style="color: #000; margin-top: 20px; margin-bottom: 10px;">7. Subscription Plans</h3>
+                <p>• Subscriptions auto-renew unless cancelled 7 days before renewal</p>
+                <p>• Unused services may not be carried forward to next billing cycle</p>
+                <p>• Subscription benefits are non-transferable</p>
+
+                <h3 style="color: #000; margin-top: 20px; margin-bottom: 10px;">8. Hygiene & Safety</h3>
+                <p>• All equipment is sterilized per WHO standards</p>
+                <p>• Disposable items are used where applicable</p>
+                <p>• Our professionals follow strict hygiene protocols</p>
+
+                <h3 style="color: #000; margin-top: 20px; margin-bottom: 10px;">9. Intellectual Property</h3>
+                <p>All content, logos, and materials on this website are property of SmileAssure and protected by copyright laws.</p>
+
+                <h3 style="color: #000; margin-top: 20px; margin-bottom: 10px;">10. Governing Law</h3>
+                <p>These terms are governed by the laws of India. Any disputes shall be subject to the jurisdiction of Bengaluru courts.</p>
+
+                <h3 style="color: #000; margin-top: 20px; margin-bottom: 10px;">11. Contact</h3>
+                <p>For questions about these terms, contact us at hello@smileassure.in or +91 9591156239</p>
+
+                <p style="margin-top: 30px; font-size: 14px;"><strong>Last Updated:</strong> February 2026</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Privacy Policy Modal -->
+    <div class="modal" id="privacyModal">
+        <div class="modal-content" style="max-width: 800px;">
+            <button class="modal-close" onclick="closeModal('privacyModal')">×</button>
+            <h2>Privacy Policy</h2>
+            
+            <div style="max-height: 500px; overflow-y: auto; padding-right: 10px; color: #666; line-height: 1.8;">
+                <h3 style="color: #000; margin-top: 20px; margin-bottom: 10px;">1. Information We Collect</h3>
+                <p><strong>Personal Information:</strong></p>
+                <p>• Name, email address, phone number</p>
+                <p>• Physical address for service delivery</p>
+                <p>• Date of birth and age</p>
+                <p>• Medical and dental history</p>
+                <p>• Payment information (processed securely via Razorpay)</p>
+
+                <p style="margin-top: 15px;"><strong>Automatically Collected Data:</strong></p>
+                <p>• IP address, browser type, device information</p>
+                <p>• Website usage data and analytics</p>
+                <p>• Cookies for improving user experience</p>
+
+                <h3 style="color: #000; margin-top: 20px; margin-bottom: 10px;">2. How We Use Your Information</h3>
+                <p>• To provide and deliver dental services</p>
+                <p>• To process payments and manage subscriptions</p>
+                <p>• To communicate about appointments and services</p>
+                <p>• To improve our services and website</p>
+                <p>• To comply with legal obligations</p>
+                <p>• To send promotional offers (with your consent)</p>
+
+                <h3 style="color: #000; margin-top: 20px; margin-bottom: 10px;">3. Information Sharing</h3>
+                <p>We do not sell your personal information. We may share data with:</p>
+                <p>• Licensed dental professionals providing your care</p>
+                <p>• Payment processors (Razorpay) for transaction processing</p>
+                <p>• Service providers assisting our operations</p>
+                <p>• Legal authorities when required by law</p>
+
+                <h3 style="color: #000; margin-top: 20px; margin-bottom: 10px;">4. Medical Records</h3>
+                <p>• All medical records are stored securely and confidentially</p>
+                <p>• Access is restricted to authorized healthcare professionals</p>
+                <p>• Records are maintained per Indian medical record retention laws</p>
+                <p>• You have the right to access your medical records</p>
+
+                <h3 style="color: #000; margin-top: 20px; margin-bottom: 10px;">5. Data Security</h3>
+                <p>• We use industry-standard encryption for data transmission</p>
+                <p>• Payment data is handled by PCI-DSS compliant processors</p>
+                <p>• Regular security audits and updates</p>
+                <p>• Limited employee access to personal information</p>
+
+                <h3 style="color: #000; margin-top: 20px; margin-bottom: 10px;">6. Cookies</h3>
+                <p>We use cookies to:</p>
+                <p>• Remember your preferences</p>
+                <p>• Analyze website traffic</p>
+                <p>• Improve user experience</p>
+                <p>You can disable cookies in your browser settings, but some features may not work properly.</p>
+
+                <h3 style="color: #000; margin-top: 20px; margin-bottom: 10px;">7. Your Rights</h3>
+                <p>You have the right to:</p>
+                <p>• Access your personal data</p>
+                <p>• Correct inaccurate information</p>
+                <p>• Request deletion of your data</p>
+                <p>• Opt-out of marketing communications</p>
+                <p>• Withdraw consent at any time</p>
+
+                <h3 style="color: #000; margin-top: 20px; margin-bottom: 10px;">8. Children's Privacy</h3>
+                <p>We provide services to minors only with parental/guardian consent. Parents/guardians have access to their child's information.</p>
+
+                <h3 style="color: #000; margin-top: 20px; margin-bottom: 10px;">9. Data Retention</h3>
+                <p>• Personal data is retained as long as you use our services</p>
+                <p>• Medical records are retained per legal requirements (minimum 3 years)</p>
+                <p>• You can request deletion after service termination</p>
+
+                <h3 style="color: #000; margin-top: 20px; margin-bottom: 10px;">10. Third-Party Links</h3>
+                <p>Our website may contain links to third-party websites. We are not responsible for their privacy practices.</p>
+
+                <h3 style="color: #000; margin-top: 20px; margin-bottom: 10px;">11. Changes to Policy</h3>
+                <p>We may update this policy periodically. Changes will be posted on this page with an updated revision date.</p>
+
+                <h3 style="color: #000; margin-top: 20px; margin-bottom: 10px;">12. Contact Us</h3>
+                <p>For privacy concerns or data requests:</p>
+                <p>Email: hello@smileassure.in</p>
+                <p>Phone: +91 9591156239</p>
+                <p>Address: Beside DLF Apartments, Jigani Industrial Area, Bengaluru</p>
+
+                <p style="margin-top: 30px; font-size: 14px;"><strong>Last Updated:</strong> February 2026</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer style="background: #1a1a1a; color: #888; padding: 60px 6% 30px; text-align: center;">
+        <div style="max-width: 1200px; margin: 0 auto;">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 40px; text-align: left; margin-bottom: 40px;">
+                <div>
+                    <h3 style="color: white; font-size: 20px; margin-bottom: 20px; font-weight: 900; letter-spacing: -1px;">SMILEASSURE</h3>
+                    <p style="line-height: 1.8; color: #999;">Professional dental care delivered to your home. Licensed experts, hospital-grade equipment, extreme simplicity.</p>
+                </div>
+                
+                <div>
+                    <h4 style="color: white; margin-bottom: 20px; font-size: 16px;">Quick Links</h4>
+                    <p style="margin: 10px 0;"><a href="#doorstep" style="color: #999; text-decoration: none; transition: color 0.3s;" onmouseover="this.style.color='#008B9D'" onmouseout="this.style.color='#999'">The Experience</a></p>
+                    <p style="margin: 10px 0;"><a href="#subscription" style="color: #999; text-decoration: none; transition: color 0.3s;" onmouseover="this.style.color='#008B9D'" onmouseout="this.style.color='#999'">Subscription Plans</a></p>
+                    <p style="margin: 10px 0;"><a href="#how-it-works" style="color: #999; text-decoration: none; transition: color 0.3s;" onmouseover="this.style.color='#008B9D'" onmouseout="this.style.color='#999'">How It Works</a></p>
+                    <p style="margin: 10px 0;"><a href="#faq" style="color: #999; text-decoration: none; transition: color 0.3s;" onmouseover="this.style.color='#008B9D'" onmouseout="this.style.color='#999'">FAQ</a></p>
+                </div>
+                
+                <div>
+                    <h4 style="color: white; margin-bottom: 20px; font-size: 16px;">Legal</h4>
+                    <p style="margin: 10px 0;"><a href="#" onclick="openModal('termsModal'); return false;" style="color: #999; text-decoration: none; transition: color 0.3s; cursor: pointer;" onmouseover="this.style.color='#008B9D'" onmouseout="this.style.color='#999'">Terms & Conditions</a></p>
+                    <p style="margin: 10px 0;"><a href="#" onclick="openModal('privacyModal'); return false;" style="color: #999; text-decoration: none; transition: color 0.3s; cursor: pointer;" onmouseover="this.style.color='#008B9D'" onmouseout="this.style.color='#999'">Privacy Policy</a></p>
+                    <p style="margin: 10px 0;"><a href="#" onclick="openModal('privacyModal'); return false;" style="color: #999; text-decoration: none; transition: color 0.3s; cursor: pointer;" onmouseover="this.style.color='#008B9D'" onmouseout="this.style.color='#999'">Refund Policy</a></p>
+                </div>
+                
+                <div>
+                    <h4 style="color: white; margin-bottom: 20px; font-size: 16px;">Contact</h4>
+                    <p style="margin: 10px 0; color: #999;">+91 9591156239</p>
+                    <p style="margin: 10px 0; color: #999;">hello@smileassure.in</p>
+                    <p style="margin: 10px 0; color: #999;">Beside DLF Apartments<br>Jigani Industrial Area<br>Bengaluru, Karnataka</p>
+                </div>
+            </div>
+            
+            <div style="border-top: 1px solid #333; padding-top: 30px; margin-top: 40px;">
+                <p style="color: #666; font-size: 14px;">© 2026 SmileAssure. All rights reserved. | Licensed by Dental Council of India</p>
+            </div>
+        </div>
+    </footer>
 
     <script>
         let selectedDate = null;
