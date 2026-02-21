@@ -408,7 +408,7 @@
 
         .card-container {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 30px;
             margin-top: 60px;
         }
@@ -896,8 +896,6 @@
             align-items: center;
             justify-content: center;
             color: white;
-            font-size: 28px;
-            font-weight: 900;
             cursor: pointer;
             box-shadow: 0 5px 20px rgba(0,139,157,0.4);
             transition: all 0.3s ease;
@@ -907,6 +905,29 @@
         .chat-float:hover {
             transform: scale(1.1);
             box-shadow: 0 8px 30px rgba(0,139,157,0.6);
+        }
+
+        .chat-float::before {
+            content: '';
+            width: 20px;
+            height: 20px;
+            border: 3px solid white;
+            border-radius: 3px 3px 0 0;
+            border-bottom: none;
+            position: absolute;
+            top: 16px;
+            left: 20px;
+        }
+
+        .chat-float::after {
+            content: '';
+            width: 12px;
+            height: 12px;
+            background: white;
+            border-radius: 0 0 3px 3px;
+            position: absolute;
+            bottom: 18px;
+            left: 24px;
         }
 
         /* --- Responsive Design --- */
@@ -1084,54 +1105,92 @@
 
     <!-- Subscription Section -->
     <section class="subscription-grid" id="subscription">
-        <p class="tagline" style="text-align: center;">The Subscription</p>
-        <h2 style="font-size: 56px; text-align: center; letter-spacing: -3px;">Oral Health on Autopilot.</h2>
+        <p class="tagline" style="text-align: center;">Our Services</p>
+        <h2 style="font-size: 56px; text-align: center; letter-spacing: -3px;">Subscription Plans</h2>
         <p style="text-align: center; color: rgba(255,255,255,0.6); margin-top: 20px; font-size: 14px;">
             🔒 Secure payments powered by Razorpay | All major payment methods accepted
         </p>
         
         <div class="card-container">
-            <div class="sub-card">
-                <h3>Essential</h3>
-                <div class="price">₹2,999<span style="font-size: 18px;">/month</span></div>
-                <p>Perfect for individuals who want hassle-free dental care.</p>
-                <ul>
-                    <li>2 doorstep cleanings/year</li>
-                    <li>Monthly AI oral scans</li>
-                    <li>24/7 chat support</li>
-                    <li>10% off treatments</li>
-                </ul>
-                <button class="select-plan-btn" onclick="selectPlan('Essential')">Select Plan</button>
-            </div>
-            
-            <div class="sub-card" style="background: var(--brand-teal);">
-                <h3 style="color: white;">Premium</h3>
-                <div class="price" style="color: white;">₹4,999<span style="font-size: 18px;">/month</span></div>
-                <p style="color: white; opacity: 0.9;">Most popular for families seeking comprehensive care.</p>
+            <div class="sub-card" style="background: var(--brand-teal); position: relative;">
+                <div style="position: absolute; top: 20px; right: 20px; background: white; color: var(--brand-teal); padding: 8px 16px; border-radius: 20px; font-size: 12px; font-weight: 800; letter-spacing: 0.5px;">BEST VALUE</div>
+                <h3 style="color: white;">Family Plan</h3>
+                <div class="price" style="color: white;">₹1,999<span style="font-size: 18px;">/year</span></div>
+                <p style="color: white; opacity: 0.9;">Save ₹1800+ per year</p>
                 <ul style="color: white;">
-                    <li>4 doorstep cleanings/year</li>
-                    <li>Weekly AI oral scans</li>
-                    <li>Priority 24/7 phone support</li>
-                    <li>20% off all treatments</li>
-                    <li>Emergency visits included</li>
+                    <li>5 Scaling sessions per year</li>
+                    <li>1 Free Bleaching session</li>
+                    <li>For family of 2 members</li>
+                    <li>Priority booking</li>
+                    <li>Free consultations</li>
+                    <li>10% off on additional services</li>
                 </ul>
-                <button class="select-plan-btn" style="background: white; color: var(--brand-teal); border-color: white;" onclick="selectPlan('Premium')">Select Plan</button>
+                <button class="select-plan-btn" style="background: white; color: var(--brand-teal); border-color: white;" onclick="selectPlan('Family Plan', 199900)">Subscribe Now</button>
+            </div>
+
+            <div class="sub-card">
+                <div style="background: #e3f2fd; color: #1976d2; padding: 6px 12px; border-radius: 20px; font-size: 11px; font-weight: 800; display: inline-block; margin-bottom: 15px;">Perfect for First-timers</div>
+                <h3>One-Time Family Pack</h3>
+                <div class="price">₹1,299<span style="font-size: 14px; text-decoration: line-through; opacity: 0.5; margin-left: 10px;">₹1,500+</span></div>
+                <p>Great value for first-time customers</p>
+                <ul>
+                    <li>Scaling for 2 family members</li>
+                    <li>Free kids checkup (if needed)</li>
+                    <li>Free prophylaxis treatment</li>
+                    <li>Valid for 3 months</li>
+                    <li>No commitment required</li>
+                </ul>
+                <button class="select-plan-btn" onclick="selectPlan('One-Time Family Pack', 129900)">Subscribe Now</button>
             </div>
             
             <div class="sub-card">
-                <h3>Family</h3>
-                <div class="price">₹8,999<span style="font-size: 18px;">/month</span></div>
-                <p>Complete coverage for up to 4 family members.</p>
+                <h3>Teeth Scaling</h3>
+                <div class="price">₹799<span style="font-size: 14px; opacity: 0.6; margin-left: 10px;">⏱ 45 mins</span></div>
+                <p>Professional deep cleaning to remove plaque and tartar buildup</p>
                 <ul>
-                    <li>Unlimited cleanings/year</li>
-                    <li>Daily AI monitoring</li>
-                    <li>Dedicated concierge</li>
-                    <li>30% off treatments</li>
-                    <li>Orthodontic consultations</li>
-                    <li>Covers 4 members</li>
+                    <li>Removes plaque & tartar</li>
+                    <li>Prevents gum disease</li>
+                    <li>Freshens breath</li>
+                    <li>Improves oral health</li>
                 </ul>
-                <button class="select-plan-btn" onclick="selectPlan('Family')">Select Plan</button>
+                <button class="select-plan-btn" onclick="selectPlan('Teeth Scaling', 79900)">Book Now</button>
             </div>
+
+            <div class="sub-card">
+                <h3>Kids Dental Checkup</h3>
+                <div class="price">From ₹599<span style="font-size: 14px; opacity: 0.6; margin-left: 10px;">⏱ 30 mins</span></div>
+                <p>Gentle checkup and cleaning designed especially for children</p>
+                <ul>
+                    <li>Child-friendly approach</li>
+                    <li>Early detection</li>
+                    <li>Preventive care</li>
+                    <li>Fun & comfortable</li>
+                </ul>
+                <button class="select-plan-btn" onclick="selectPlan('Kids Dental Checkup', 59900)">Book Now</button>
+            </div>
+
+            <div class="sub-card">
+                <h3>Teeth Bleaching</h3>
+                <div class="price">₹1,299<span style="font-size: 14px; opacity: 0.6; margin-left: 10px;">⏱ 60 mins</span></div>
+                <p>Safe whitening treatment for a brighter, confident smile</p>
+                <ul>
+                    <li>Professional whitening</li>
+                    <li>Visible results</li>
+                    <li>Safe & effective</li>
+                    <li>Boosts confidence</li>
+                </ul>
+                <button class="select-plan-btn" onclick="selectPlan('Teeth Bleaching', 129900)">Book Now</button>
+            </div>
+        </div>
+
+        <div style="background: #1976d2; border-radius: 20px; padding: 30px; margin-top: 60px; text-align: left;">
+            <h3 style="color: white; margin-bottom: 15px; font-size: 20px;">All Services Include:</h3>
+            <ul style="list-style: none; color: white; line-height: 2;">
+                <li>✓ Certified & experienced dentists</li>
+                <li>✓ Sterilized equipment</li>
+                <li>✓ At-home convenience</li>
+                <li>✓ Follow-up care included</li>
+            </ul>
         </div>
     </section>
 
@@ -1240,9 +1299,7 @@
     </section>
 
     <!-- Floating Chat Button -->
-    <div class="chat-float" onclick="openContactModal()">
-        <span style="font-size: 24px; font-weight: 700;">?</span>
-    </div>
+    <div class="chat-float" onclick="openContactModal()"></div>
 
     <!-- Waitlist Modal -->
     <div class="modal" id="waitlistModal">
@@ -1423,7 +1480,7 @@
     <div class="modal" id="planModal">
         <div class="modal-content">
             <button class="modal-close" onclick="closeModal('planModal')">×</button>
-            <h2 id="planModalTitle">Essential Plan</h2>
+            <h2 id="planModalTitle">Family Plan</h2>
             <p style="color: #666; margin-bottom: 30px;">Complete your subscription to get started with SmileAssure.</p>
             
             <form id="planForm" onsubmit="submitPlan(event)">
@@ -1560,14 +1617,17 @@
             openModal('contactModal');
         }
 
-        function selectPlan(plan) {
+        function selectPlan(plan, price) {
             selectedPlan = plan;
-            document.getElementById('planModalTitle').textContent = plan + ' Plan';
-            if (plan === 'Family') {
+            document.getElementById('planModalTitle').textContent = plan;
+            
+            // Family Plan gets the family members selector
+            if (plan === 'Family Plan') {
                 document.getElementById('familyMembersGroup').style.display = 'block';
             } else {
                 document.getElementById('familyMembersGroup').style.display = 'none';
             }
+            
             openModal('planModal');
         }
 
@@ -1658,10 +1718,13 @@
         const BUSINESS_EMAIL = 'hello@smileassure.in';
         const RAZORPAY_KEY_ID = 'rzp_test_SG7vGXpQ7iQYeD';
         
+        // Subscription Plans Pricing (in paise - 1 Rupee = 100 paise)
         const PLANS = {
-            'Essential': {price: 299900, currency: 'INR', name: 'Essential Plan', description: '2 doorstep cleanings/year + Monthly AI scans'},
-            'Premium': {price: 499900, currency: 'INR', name: 'Premium Plan', description: '4 doorstep cleanings/year + Weekly AI scans'},
-            'Family': {price: 899900, currency: 'INR', name: 'Family Plan', description: 'Unlimited cleanings + Coverage for 4 members'}
+            'Family Plan': {price: 199900, currency: 'INR', name: 'Family Plan', description: '5 Scaling sessions + 1 Free Bleaching per year'},
+            'One-Time Family Pack': {price: 129900, currency: 'INR', name: 'One-Time Family Pack', description: 'Scaling for 2 family members + Free kids checkup'},
+            'Teeth Scaling': {price: 79900, currency: 'INR', name: 'Teeth Scaling', description: 'Professional deep cleaning (45 mins)'},
+            'Kids Dental Checkup': {price: 59900, currency: 'INR', name: 'Kids Dental Checkup', description: 'Gentle checkup for children (30 mins)'},
+            'Teeth Bleaching': {price: 129900, currency: 'INR', name: 'Teeth Bleaching', description: 'Safe whitening treatment (60 mins)'}
         };
         
         function initializePayment(planData, customerData) {
